@@ -111,9 +111,10 @@ class JWTAuthentication(authentication.BaseAuthentication):
             user = User.objects.get(**{api_settings.USER_ID_FIELD: user_id})
         except User.DoesNotExist:
             raise AuthenticationFailed(_('User not found'), code='user_not_found')
-
-        if not user.is_active:
-            raise AuthenticationFailed(_('User is inactive'), code='user_inactive')
+            
+        if api_settings.VERIFY_IN_LOGIN_USER_IS_ACTIVE:
+            if not user.is_active:
+                raise AuthenticationFailed(_('User is inactive'), code='user_inactive')
 
         return user
 
