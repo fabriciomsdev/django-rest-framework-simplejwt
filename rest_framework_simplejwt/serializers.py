@@ -40,9 +40,14 @@ class TokenObtainSerializer(serializers.Serializer):
         # `AllowAllUsersModelBackend`.  However, we explicitly prevent inactive
         # users from authenticating to enforce a reasonable policy and provide
         # sensible backwards compatibility with older Django versions.
-        if self.user is None or not self.user.is_active:
+        if api_settings.VERIFY_IN_LOGIN_USER_IS_ACTIVE:
+            if self.user is not None or not self.user.is_active:
+                raise serializers.ValidationError(
+                    _('No active account found with the given credentials'),
+                )
+        if self.user is None:
             raise serializers.ValidationError(
-                _('No active account found with the given credentials'),
+                _('There is not user with credentials'),
             )
 
         return {}
