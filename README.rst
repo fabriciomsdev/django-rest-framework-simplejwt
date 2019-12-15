@@ -274,6 +274,9 @@ SLIDING_TOKEN_REFRESH_EXP_CLAIM
   The claim name that is used to store the exipration time of a sliding token's
   refresh period.  More about this in the "Sliding tokens" section below.
 
+VERIFY_IN_LOGIN_USER_IS_ACTIVE
+  If is true, when login (jwt/create), will verify if user is active to login.
+
 Customizing token claims
 ------------------------
 
